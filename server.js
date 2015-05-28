@@ -41,21 +41,26 @@ var getSubtexts = function(webrtt) {
 
 var getKeywords = function(subtexts) {
     var keywords = [];
-    var keyword = {};
-    subtexts.forEach(function(subtext) {
-        subtext.lines.forEach(function(line) {
+    for (var i=0; i<subtexts.length; i++) {
+        var subtext = subtexts[i];
+        for (var j= 0; j<subtext.lines.length; j++) {
+            var keyword = {};
+            var line = subtext.lines[j];
             var words = line.split(/[^A-Za-z\u00C0-\u017F]/);
-            for (var i=0; i<words.length; i++) {
-                if (names[words[i]] && i<words.length+1) {
-                    var nextInitial = words[i+1].charAt(0);
+            for (var k=0; k<words.length; k++) {
+                if (names[words[k]] && k<words.length+1) {
+                    var nextInitial = words[k+1].charAt(0);
                     if (nextInitial === nextInitial.toUpperCase()) {
-                        keywords.push(words[i] + ' ' + words[i+1]);
+                        keyword.time = subtext.time;
+                        keyword.word = words[k] + ' ' + words[k+1];
+                        keywords.push(keyword);
+                        keyword = {};
                         i++;
                     }
                 }
             }
-        });
-    });
+        }
+    }
     return keywords;
 };
 
