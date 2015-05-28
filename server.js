@@ -8,6 +8,12 @@ JSON.parse(fs.readFileSync('names.json', 'utf8')).forEach(function(name) {
 });
 
 
+var getDate = function(str) {
+    var parts = str.split(':');
+    return parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseInt(parts[1])
+};
+
+
 var getSubtexts = function(webrtt) {
     var lines = webrtt.split(/\r?\n/);
     var subtexts = [];
@@ -22,7 +28,7 @@ var getSubtexts = function(webrtt) {
                 state = 1;
                 break;
             case 1:
-                subtext.time = line;
+                subtext.time = getDate(line);
                 state = 2;
                 break;
             default:
